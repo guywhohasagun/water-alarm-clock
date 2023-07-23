@@ -5,6 +5,7 @@
 #include <LiquidCrystal_I2C.h>
 
 //1440 minutes in a day
+int analogPin = A0;
 
 int alarmMinute = 0;
 int alarmHour = 0;
@@ -20,7 +21,7 @@ void setup () {
     RTC.begin(DateTime(__DATE__, __TIME__));
     lcd.init();
     lcd.backlight();
-    pinMode(A0, INPUT);
+    pinMode(analogPin, INPUT);
 }
 
 void loop () {
@@ -29,7 +30,7 @@ void loop () {
     Serial.println("Pump HIGH");
     lcd.println("pump high");
   }
-  analogInput = map(analogRead(A0), 0, 1023, 0, 1440);
+  analogInput = map(analogRead(analogPin), 0, 1023, 0, 1440);
   lcd.println(analogInput);
   delay(100);
 }
