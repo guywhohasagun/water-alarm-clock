@@ -9,6 +9,8 @@
 int alarmMinute = 0;
 int alarmHour = 0;
 
+int analogInput = 0;
+
 RTC_Millis RTC;
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 
@@ -27,7 +29,7 @@ void loop () {
     Serial.println("Pump HIGH");
     lcd.println("pump high");
   }
-  Serial.println(analogRead(A0));
-  lcd.println(analogRead(A0));
+  analogInput = map(analogRead(A0), 0, 1023, 0, 1440);
+  lcd.println(analogInput);
   delay(100);
 }
