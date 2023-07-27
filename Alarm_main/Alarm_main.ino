@@ -3,12 +3,14 @@
 #include <Wire.h>
 #include <RTClib.h>
 #include <LiquidCrystal_I2C.h>
+#include <EEPROM.h>
 
 //1440 minutes in a day
 int analogPin = A0;
 int alarmMinute = 0;
 int alarmHour = 0;
 int analogInput = 0;
+int buttonPin = 2;
  
 float timeHours = 0;
 int timeIntHours = 0;
@@ -25,7 +27,7 @@ void setup () {
     lcd.init();
     lcd.backlight();
     pinMode(analogPin, INPUT);
-    
+    pinMode(buttonPin, INPUT_PULLUP);
 }
 
 void MTOHM () {
@@ -36,6 +38,18 @@ void MTOHM () {
   timeMinutesDevided = timeHours - timeIntHours;
 
   timeMinutes = timeMinutesDevided * 60;
+
+  
+}
+
+void button () {
+  int sensorVal = digitalRead(buttonPin);
+  
+  if (sensorVal == LOW) {
+    EEPROM.update(0, timeIntHours);
+    EEPROM.update(1, timeMinutes);
+    Serial.println("time set to " + String(timeIntHours) + ":" + String(timeMinutes));
+  } 
 }
 
 void loop () {
@@ -47,6 +61,14 @@ void loop () {
   lcd.println(String(timeIntHours) + ":" + String(timeMinutes));
 
   MTOHM();
-  Serial.println(String(timeIntHours) + ":" + String(timeMinutes));
+
+  button();
+
+  alarmMinute = EEPROM.read(1);
+  alarmHour = EEPROM.read(0);
+
+  Serial.println(alarmMinute);
+  Serial.println(alarmHour);
+
   delay(100);
 }
