@@ -30,6 +30,7 @@ void setup () {
     pinMode(analogPin, INPUT);
     pinMode(buttonPin, INPUT_PULLUP);
     pinMode(pumpPin, OUTPUT);
+    
 }
 
 void MTOHM () {
