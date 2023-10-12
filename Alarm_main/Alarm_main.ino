@@ -12,7 +12,9 @@ int alarmHour = 0;
 int analogInput = 0;
 int buttonPin = 2;
 int pumpPin = 3;
- 
+
+int iVal = 0;
+
 float timeHours = 0;
 int timeIntHours = 0;
 float timeMinutesDevided = 0;
@@ -45,13 +47,21 @@ void MTOHM () {
   
 }
 
+String addAZero(int iVal) {
+  if (iVal < 10 && iVal >= 0) {
+    return "0" + String(iVal);
+  } else {
+    return String(iVal);  // Return the original value if not < 10 and >= 0
+  }
+}
+
 void button () {
   int sensorVal = digitalRead(buttonPin);
   
   if (sensorVal == LOW) {
     EEPROM.update(0, timeIntHours);
     EEPROM.update(1, timeMinutes);
-    Serial.println("time set to " + String(timeIntHours) + ":" + String(timeMinutes));
+    Serial.println("time set to " + String(timeIntHours) + ":" + addAZero(timeMinutes));
   } 
 }
 
@@ -61,11 +71,11 @@ void loop () {
     Serial.println("Pump HIGH");
     lcd.println("pump high");
     digitalWrite(pumpPin, HIGH);
-    delay(30000);
+    //delay(30000);
     digitalWrite(pumpPin, LOW);
     Serial.println("pump low");
     lcd.clear();
-    delay(30000);
+    //delay(30000);
   }
   else {
     digitalWrite(pumpPin, LOW);
