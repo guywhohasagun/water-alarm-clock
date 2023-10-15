@@ -47,11 +47,11 @@ void MTOHM () {
   
 }
 
-String addAZero(int iVal) {
-  if (iVal < 10 && iVal >= 0) {
-    return "0" + String(iVal);
+String addAZero(int value) {
+  if (value < 10 && value >= 0) {
+    return "0" + String(value);
   } else {
-    return String(iVal);  // Return the original value if not < 10 and >= 0
+    return String(value);  // Return the original value if not < 10 and >= 0
   }
 }
 
