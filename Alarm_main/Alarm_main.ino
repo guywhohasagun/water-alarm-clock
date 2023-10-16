@@ -36,10 +36,10 @@ void setup () {
 
 void MTOHM () {
   timeHours = analogRead(analogPin);
-  timeHours = map(analogRead(analogPin), 0, 1023, 0, 24);
+  timeHours = map(analogRead(analogPin), 0, 1023, 0, 25);
 
   timeMinutes = analogRead(analogPinMin);
-  timeMinutes = map(analogRead(analogPinMin), 0, 1023, -1, 61);
+  timeMinutes = map(analogRead(analogPinMin), 0, 1023, 0, 60);
 }
 
 String addAZero(int value) {
