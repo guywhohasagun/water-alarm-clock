@@ -7,17 +7,15 @@
 
 //1440 minutes in a day
 int analogPin = A0;
+int analogPinMin = A1;
 int alarmMinute = 0;
 int alarmHour = 0;
 int analogInput = 0;
+int analogInputMin = 0;
 int buttonPin = 2;
 int pumpPin = 3;
 
-int iVal = 0;
-
-float timeHours = 0;
-int timeIntHours = 0;
-float timeMinutesDevided = 0;
+int timeHours = 0;
 int timeMinutes = 0;
 
 RTC_Millis RTC;
@@ -30,21 +28,18 @@ void setup () {
     lcd.init();
     lcd.backlight();
     pinMode(analogPin, INPUT);
+    pinMode(analogPinMin, INPUT);
     pinMode(buttonPin, INPUT_PULLUP);
     pinMode(pumpPin, OUTPUT);
     
 }
 
 void MTOHM () {
-  analogInput = map(analogRead(analogPin), 0, 1023, 0, 1440);
-  timeHours = float(analogInput) / 60;
-  timeIntHours = analogInput / 60;
+  timeHours = analogRead(analogPin);
+  timeHours = map(analogRead(analogPin), 0, 1023, 0, 24);
 
-  timeMinutesDevided = timeHours - timeIntHours;
-
-  timeMinutes = timeMinutesDevided * 60;
-
-  
+  timeMinutes = analogRead(analogPinMin);
+  timeMinutes = map(analogRead(analogPinMin), 0, 1023, -1, 61);
 }
 
 String addAZero(int value) {
@@ -59,9 +54,9 @@ void button () {
   int sensorVal = digitalRead(buttonPin);
   
   if (sensorVal == LOW) {
-    EEPROM.update(0, timeIntHours);
+    EEPROM.update(0, timeHours);
     EEPROM.update(1, timeMinutes);
-    Serial.println("time set to " + String(timeIntHours) + ":" + addAZero(timeMinutes));
+    Serial.println("time set to " + String(timeHours) + ":" + addAZero(timeMinutes));
   } 
 }
 
@@ -80,7 +75,7 @@ void loop () {
   else {
     digitalWrite(pumpPin, LOW);
   }
-  lcd.println(String(timeIntHours) + ":" + String(timeMinutes));
+  lcd.println(String(timeHours) + ":" + addAZero(timeMinutes));
 
   MTOHM();
 
